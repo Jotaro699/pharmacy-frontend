@@ -1012,7 +1012,6 @@
 //     </div>
 //   );
 // };
-
 // export default Display;
 import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
@@ -1025,11 +1024,8 @@ import {
   ArrowRight,
   HeartPulse,
   Shield,
-  Tag,
   Sparkles,
-  AlertCircle,
-  Star,
-  Percent,
+  Tag,Star,
 } from "lucide-react";
 
 const Display = () => {
@@ -1085,16 +1081,14 @@ const Display = () => {
     setCurrentSlide((prev) => (prev - 1 + products.length) % products.length);
   };
 
-  const getRandomDiscount = () => Math.floor(Math.random() * 16) + 5;
-
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-teal-900 to-slate-900 text-white font-sans overflow-hidden">
-      {/* Background floating particles */}
+    <div className="relative min-h-screen bg-gradient-to-b from-green-800 to-emerald-700 text-white font-sans overflow-hidden">
+      {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(10)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-teal-500/10"
+            className="absolute rounded-full bg-emerald-400/10"
             style={{
               width: `${Math.random() * 100 + 50}px`,
               height: `${Math.random() * 100 + 50}px`,
@@ -1106,30 +1100,29 @@ const Display = () => {
           />
         ))}
       </div>
-
       {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-50 p-2 bg-gradient-to-r from-teal-900/80 to-emerald-900/80 backdrop-blur-md flex justify-between items-center border-b border-teal-500/30 shadow-lg">
+      <div className="absolute top-0 left-0 right-0 z-50 p-2 bg-gradient-to-r from-green-900/90 to-emerald-800/90 backdrop-blur-md flex justify-between items-center border-b border-emerald-400/20 shadow-md">
         <div className="flex items-center gap-3">
           <img
             src={logo}
             alt="logo"
-            className="h-16 w-auto rounded-xl shadow-lg border-2 border-teal-400 bg-white p-2"
+            className="h-16 w-auto rounded-xl shadow-lg border-2 border-emerald-500 bg-white p-2"
           />
           <div className="relative">
-            <HeartPulse size={28} className="text-teal-300 animate-pulse" />
+            <HeartPulse size={28} className="text-emerald-300 animate-pulse" />
             <Shield
               size={16}
-              className="absolute -right-1 -bottom-1 text-white bg-emerald-500 rounded-full p-0.5"
+              className="absolute -right-1 -bottom-1 text-white bg-emerald-600 rounded-full p-0.5"
             />
           </div>
-          <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-300">
+          <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-white">
             Para M3A Pharma
           </span>
         </div>
 
         <button
           onClick={() => setMode(mode === "slideshow" ? "grid" : "slideshow")}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 rounded-full shadow-lg transition-all duration-300 hover:shadow-teal-500/30"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 rounded-full shadow-lg transition-all duration-300 hover:shadow-emerald-500/30"
         >
           {mode === "slideshow" ? (
             <LayoutGrid size={16} />
@@ -1141,16 +1134,14 @@ const Display = () => {
 
         <div className="text-right">
           <div className="flex items-center gap-2 text-lg">
-            <Clock size={20} className="text-teal-300" />
+            <Clock size={20} className="text-emerald-300" />
             <span className="font-medium">{clock.time}</span>
           </div>
-          <div className="text-sm text-teal-200/80">{clock.date}</div>
+          <div className="text-sm text-emerald-200/80">{clock.date}</div>
         </div>
       </div>
-
-      {/* Mode rendering comes here */}
-      {/* Reste du rendu comme slideshow ou catalogue */}
-      {mode === "slideshow" ? (
+      {/* Slideshow mode */}
+      {mode === "slideshow" && (
         <div className="relative w-full h-screen pt-24">
           {products.map((product, index) => (
             <div
@@ -1161,70 +1152,115 @@ const Display = () => {
                   : "opacity-0 pointer-events-none"
               }`}
             >
-              {/* Image full height */}
-              <div className="w-full md:w-2/3 h-[36rem] flex items-center justify-center">
-                <div
-                  className="w-full h-full bg-cover bg-center rounded-3xl shadow-2xl border-2 border-teal-500/30"
-                  style={{
-                    backgroundImage: `url(http://localhost:8000/storage/${product.image})`,
-                  }}
+              <div className="w-full md:w-2/3 h-[40rem] flex items-center justify-center">
+                <img
+                  src={`http://localhost:8000/storage/${product.image}`}
+                  alt={product.name}
+                  className="max-h-[40rem] max-w-[90%] object-contain rounded-3xl shadow-2xl border-2 border-emerald-500/30 bg-white p-6"
                 />
               </div>
-
-              {/* Info small box */}
               <div className="w-full md:w-1/3 flex flex-col justify-center">
-                <div className="bg-gradient-to-br from-slate-800/80 to-teal-900/80 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden border-2 border-teal-500/30 p-6 space-y-4">
-                  <h1 className="text-3xl font-bold flex items-center gap-3 text-white">
-                    <Sparkles size={24} className="text-amber-300" />
-                    <span className="bg-gradient-to-r from-teal-300 to-emerald-300 bg-clip-text text-transparent">
-                      {product.name}
-                    </span>
-                  </h1>
-                  <p className="text-lg text-teal-200">{product.description}</p>
-                  <div className="flex justify-end">
-                    <div className="text-right">
-                      <p className="text-sm text-teal-300/80">Prix Spécial</p>
-                      <div className="flex items-end justify-end gap-2">
-                        {Math.random() > 0.5 && (
-                          <span className="text-lg line-through text-rose-400/70">
-                            {(product.price * 1.2).toFixed(2)} DH
+                <div className="relative bg-gradient-to-br from-white to-emerald-50 rounded-3xl shadow-2xl overflow-hidden border border-emerald-200 p-8 space-y-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-emerald-300/30">
+                  {/* Décoration coin haut droite */}
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-emerald-300/30 to-transparent rounded-bl-3xl"></div>
+
+                  {/* Badge promotion */}
+                  {product.promotion_percentage > 0 && (
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-pink-500 to-rose-600 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1 shadow-md">
+                      <Tag size={14} />-{product.promotion_percentage}%
+                    </div>
+                  )}
+
+                  {/* Nom du produit avec icône */}
+                  <div className="space-y-3">
+                    <h1 className="text-3xl font-bold flex items-center gap-3 text-emerald-900">
+                      <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-500 rounded-full flex items-center justify-center shadow-inner">
+                        <Sparkles size={20} className="text-white" />
+                      </div>
+                      <span className="bg-gradient-to-r from-emerald-700 to-green-600 bg-clip-text text-transparent">
+                        {product.name}
+                      </span>
+                    </h1>
+
+                    {/* Étoiles */}
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={16}
+                          className={`${
+                            i < 4
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                      <span className="text-sm text-emerald-600 ml-2">
+                        (4.8)
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-emerald-700 leading-relaxed text-sm italic border-l-4 border-emerald-300 pl-4">
+                    {product.description}
+                  </p>
+
+                  {/* Bloc prix */}
+                  <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl p-4">
+                    <div className="flex justify-between items-end">
+                      <div>
+                        <p className="text-sm text-emerald-600 font-medium">
+                          Prix Spécial
+                        </p>
+                        {product.promotion_percentage > 0 && (
+                          <p className="text-xs text-emerald-500">
+                            Économisez {product.promotion_percentage}%
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="text-right">
+                        {product.promotion_percentage > 0 && (
+                          <span className="text-lg line-through text-gray-400 block">
+                            {(
+                              product.price /
+                              (1 - product.promotion_percentage / 100)
+                            ).toFixed(2)}{" "}
+                            DH
                           </span>
                         )}
-                        <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-200">
-                          {Number(product.price).toFixed(2)} DH
+                        <span className="text-4xl font-bold text-emerald-800">
+                          {Number(product.price).toFixed(2)}
+                          <span className="text-2xl text-emerald-600 ml-1">
+                            DH
+                          </span>
                         </span>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Message au lieu du bouton panier */}
+                  <div className="text-center pt-2 text-sm text-emerald-600 font-medium">
+                    Produit disponible en pharmacie. Consultez notre personnel.
                   </div>
                 </div>
               </div>
             </div>
           ))}
-
-          {/* Slideshow controls */}
-          <button
-            onClick={goToPrevSlide}
-            className="absolute top-1/2 left-6 transform -translate-y-1/2 p-4 bg-teal-900/70 hover:bg-teal-800/80 rounded-full shadow-lg border-2 border-teal-500/30 backdrop-blur-sm"
-          >
-            <ArrowLeft size={28} className="text-teal-300" />
-          </button>
-          <button
-            onClick={goToNextSlide}
-            className="absolute top-1/2 right-6 transform -translate-y-1/2 p-4 bg-teal-900/70 hover:bg-teal-800/80 rounded-full shadow-lg border-2 border-teal-500/30 backdrop-blur-sm"
-          >
-            <ArrowRight size={28} className="text-teal-300" />
-          </button>
         </div>
-      ) : (
+      )}
+      {/* Grid (catalogue) mode */}
+      {mode === "grid" && (
         <div className="pt-28 px-6 pb-12 max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-300 mb-10">
+          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-white mb-10">
             Notre Catalogue de Produits
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-teal-800/30 p-4 rounded-xl shadow-lg hover:shadow-teal-500/30 transition-all"
+                className="bg-emerald-800/30 p-4 rounded-xl shadow-lg hover:shadow-emerald-500/30 transition-all"
               >
                 <div
                   className="w-full h-48 bg-cover bg-center rounded-lg mb-4"
@@ -1235,11 +1271,13 @@ const Display = () => {
                 <h3 className="text-xl font-bold text-white mb-2">
                   {product.name}
                 </h3>
-                <p className="text-teal-200 text-sm mb-2">{product.category}</p>
-                <p className="text-teal-100 text-sm line-clamp-2">
+                <p className="text-emerald-200 text-sm mb-2">
+                  {product.category}
+                </p>
+                <p className="text-emerald-100 text-sm line-clamp-2">
                   {product.description}
                 </p>
-                <div className="mt-2 text-2xl font-bold text-teal-300">
+                <div className="mt-2 text-2xl font-bold text-emerald-300">
                   {Number(product.price).toFixed(2)} DH
                 </div>
               </div>
@@ -1247,41 +1285,111 @@ const Display = () => {
           </div>
         </div>
       )}
+      <footer className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-900 via-emerald-900 to-green-900 text-white py-3 px-6 border-t border-green-500/40 shadow-xl z-50 backdrop-blur-sm">
+        <div className="overflow-hidden relative">
+          {/* Gradient fade effects on sides */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-green-900 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-green-900 to-transparent z-10 pointer-events-none"></div>
 
-      {/* Footer promotions */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-teal-800 to-emerald-800 text-white py-3 px-6 border-t border-teal-600/50 z-50">
-        <div className="overflow-x-auto whitespace-nowrap flex items-center gap-6">
-          {products
-            .filter((p) => p.promotion_percentage > 0)
-            .map((promo) => (
-              <div
-                key={promo.id}
-                className="flex items-center gap-4 bg-teal-700/40 px-4 py-2 rounded-lg shadow border border-teal-500/30"
-              >
-                <img
-                  src={`http://localhost:8000/storage/${promo.image}`}
-                  alt={promo.name}
-                  className="h-12 w-12 rounded object-cover border border-white"
-                />
-                <div>
-                  <p className="font-semibold text-white text-sm truncate w-32">
-                    {promo.name}
-                  </p>
-                  <p className="text-xs text-teal-200">
-                    -{promo.promotion_percentage}%
+          <div className="animate-slide whitespace-nowrap flex items-center gap-6 py-1">
+            {products
+              .filter((p) => p.promotion_percentage > 0)
+              .map((promo) => (
+                <div
+                  key={promo.id}
+                  className="flex items-center gap-4 bg-gradient-to-r from-green-800/50 to-emerald-800/50 px-4 py-2 rounded-xl shadow-lg border border-green-400/40 hover:border-green-300/60 transition-all duration-300 hover:scale-105 cursor-pointer backdrop-blur-sm"
+                >
+                  <div className="relative">
+                    <img
+                      src={`http://localhost:8000/storage/${promo.image}`}
+                      alt={promo.name}
+                      className="h-12 w-12 rounded-lg object-cover border-2 border-white/80 shadow-md"
+                    />
+                    {/* Discount badge */}
+                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-md">
+                      -{promo.promotion_percentage}%
+                    </div>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-white text-sm truncate w-36 mb-1">
+                      {promo.name}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="line-through text-xs text-red-300/80">
+                        {Number(promo.price).toFixed(2)} DH
+                      </span>
+                      <span className="font-bold text-emerald-200 text-sm">
+                        {(
+                          Number(promo.price) -
+                          (Number(promo.price) * promo.promotion_percentage) /
+                            100
+                        ).toFixed(2)}{" "}
+                        DH
+                      </span>
+                    </div>
+                    <div className="text-xs text-emerald-300/80 mt-1">
+                      Économisez{" "}
+                      {(
+                        (Number(promo.price) * promo.promotion_percentage) /
+                        100
+                      ).toFixed(2)}{" "}
+                      DH
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+            {/* No promotions message */}
+            {products.filter((p) => p.promotion_percentage > 0).length ===
+              0 && (
+              <div className="flex items-center justify-center w-full">
+                <div className="bg-green-800/30 px-6 py-3 rounded-lg border border-green-500/30">
+                  <p className="text-sm text-emerald-200 italic flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    Aucune promotion en cours - Restez connecté pour les
+                    prochaines offres !
                   </p>
                 </div>
               </div>
-            ))}
-          {products.filter((p) => p.promotion_percentage > 0).length === 0 && (
-            <p className="text-sm text-teal-200">Aucune promotion en cours</p>
-          )}
+            )}
+          </div>
         </div>
       </footer>
+      <style jsx>{`
+        @keyframes slide {
+          0% {
+            transform: translateX(100%);
+          }
+          100% {
+            transform: translateX(-100%);
+          }
+        }
+
+        .animate-slide {
+          animation: slide
+            ${products.filter((p) => p.promotion_percentage > 0).length * 8}s
+            linear infinite;
+        }
+
+        /* Pause animation on hover */
+        .animate-slide:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default Display;
-
-

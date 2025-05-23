@@ -24,3 +24,21 @@ module.exports = {
     },
   },
 };
+module.exports = {
+  darkMode: "class", // يدعم الوضع الليلي
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  theme: {
+    extend: {
+      animation: {
+        scrollText: "scrollText 12s linear infinite",
+      },
+      keyframes: {
+        scrollText: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
+    },
+  },
+  plugins: [],
+};

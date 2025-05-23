@@ -1,137 +1,8 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-
-// function Login() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     setError("");
-
-//     try {
-//       await axios.get("http://localhost:8000/sanctum/csrf-cookie", {
-//         withCredentials: true,
-//       });
-
-//       await axios.post(
-//         "http://localhost:8000/login",
-//         { email, password },
-//         {
-//           withCredentials: true,
-//         }
-//       );
-
-//       window.location.href = "/dashboard";
-//     } catch (err) {
-//       console.error(err);
-//       setError("Échec de la connexion");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Connexion</h2>
-//       <form onSubmit={handleLogin}>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           placeholder="Email"
-//         />
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           placeholder="Mot de passe"
-//         />
-//         <button type="submit">Se connecter</button>
-//       </form>
-//       {error && <p>{error}</p>}
-//     </div>
-//   );
-// }
-
-// export default Login;
-// import React, { useState } from "react";
-// import axios from "axios";
-
-// function Login() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     setError("");
-
-//     try {
-//       // 1. Get CSRF Cookie
-//       await axios.get("http://localhost:8000/sanctum/csrf-cookie", {
-//         withCredentials: true,
-//       });
-      
-
-//       // 2. Send login to /login not /api/login (VERY IMPORTANT!)
-//       const res = await axios.post(
-//         "http://localhost:8000/login",
-//         { email, password },
-//         {
-//           headers: {
-//             "X-XSRF-TOKEN": decodeURIComponent(
-//               document.cookie
-//                 .split("; ")
-//                 .find((row) => row.startsWith("XSRF-TOKEN="))
-//                 ?.split("=")[1] || ""
-//             ),
-//           },
-//           withCredentials: true,
-//         }
-//       );
-
-//       // 3. Redirect to dashboard
-//       window.location.replace("/dashboard");
-//     } catch (err) {
-//       console.error(err);
-//       setError("Échec de la connexion");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "50px", maxWidth: "400px", margin: "auto" }}>
-//       <h2>Connexion Admin</h2>
-//       <form onSubmit={handleLogin}>
-//         <input
-//           type="email"
-//           placeholder="Adresse email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           required
-//           style={{ display: "block", margin: "10px 0", width: "100%" }}
-//         />
-//         <input
-//           type="password"
-//           placeholder="Mot de passe"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           required
-//           style={{ display: "block", margin: "10px 0", width: "100%" }}
-//         />
-//         <button type="submit" style={{ padding: "10px 20px" }}>
-//           Se connecter
-//         </button>
-//       </form>
-//       {error && <p style={{ color: "red" }}>{error}</p>}
-//     </div>
-//   );
-// }
-
-// export default Login;
-
 import React, { useState } from "react";
 import axios from "axios";
 import { ShieldCheck, Lock, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -211,6 +82,14 @@ function Login() {
               {error}
             </p>
           )}
+          <div className="text-center mt-4">
+            <Link
+              to="/reset-password"
+              className="text-sm text-green-600 hover:underline hover:text-green-800 transition"
+            >
+              Mot de passe oublié ?
+            </Link>
+          </div>
 
           <button
             type="submit"

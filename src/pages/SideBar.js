@@ -7,14 +7,12 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  User,
 } from "lucide-react";
 import axios from "axios";
 
-const Sidebar = () => {
+const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navItems = [
@@ -47,17 +45,14 @@ const Sidebar = () => {
       );
 
       localStorage.removeItem("token");
-
-      // ✅ Redirect and force refresh
       navigate("/", { replace: true });
-      window.location.reload(); // force reload to clear state/auth
+      window.location.reload();
     } catch (err) {
       console.error("Erreur de déconnexion:", err);
     } finally {
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const handleResize = () => {
@@ -66,7 +61,7 @@ const Sidebar = () => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [setIsCollapsed]);
 
   return (
     <>

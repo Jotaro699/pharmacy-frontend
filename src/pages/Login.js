@@ -82,14 +82,14 @@ function Login() {
               {error}
             </p>
           )}
-          <div className="text-center mt-4">
+           <div className="text-center mt-4">
             <Link
               to="/reset-password"
               className="text-sm text-green-600 hover:underline hover:text-green-800 transition"
             >
               Mot de passe oublié ?
             </Link>
-          </div>
+          </div> 
 
           <button
             type="submit"

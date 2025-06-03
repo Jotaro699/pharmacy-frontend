@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 
-const Navbar = ({ darkMode, setDarkMode }) => {
+const Navbar = ({ darkMode, setDarkMode, isCollapsed }) => {
   useEffect(() => {
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
@@ -15,7 +15,12 @@ const Navbar = ({ darkMode, setDarkMode }) => {
   }, [darkMode]);
 
   return (
-    <nav className="fixed top-0 left-64 right-0 z-40 bg-white dark:bg-gray-900 shadow px-6 py-4">
+    <nav
+      className={`fixed top-0 z-40 ${
+        isCollapsed ? "left-16" : "left-64"
+      } right-0 bg-white dark:bg-gray-900 shadow px-6 py-4 transition-all duration-300`}
+    >
+      {" "}
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="overflow-hidden w-[500px] md:w-[1000px]">
           <p className="whitespace-nowrap animate-scrollText text-blue-700 dark:text-blue-300 font-semibold text-sm text-center">

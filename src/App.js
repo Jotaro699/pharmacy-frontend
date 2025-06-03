@@ -1,85 +1,38 @@
-// // import React from "react";
-// // import { Routes, Route, Navigate } from "react-router-dom";
-// // import Login from "./pages/Login";
-// // import Dashboard from "./pages/Dashboard";
-
-// // function App() {
-// //   const token = localStorage.getItem("token");
-
-// //   return (
-// //     <Routes>
-// //       {/* إذا ما كانش token، خليه يدير login */}
-// //       <Route
-// //         path="/"
-// //         element={!token ? <Login /> : <Navigate to="/dashboard" />}
-// //       />
-
-// //       {/* إذا ما كانش token، ما يدخلش للداشبورد */}
-// //       <Route
-// //         path="/dashboard"
-// //         element={token ? <Dashboard /> : <Navigate to="/" />}
-// //       />
-// //     </Routes>
-// //   );
-// // }
-
-// // export default App;
-
-// import React, { useEffect, useState } from "react";
-// import { Routes, Route, Navigate } from "react-router-dom";
-// import Login from "./pages/Login";
-// import Dashboard from "./pages/Dashboard";
-// import Display from "./pages/Display";
-// import axios from "axios";
-
-// function App() {
-//   const [authChecked, setAuthChecked] = useState(false);
-//   const [authenticated, setAuthenticated] = useState(false);
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:8000/api/user", { withCredentials: true })
-//       .then(() => setAuthenticated(true))
-//       .catch(() => setAuthenticated(false))
-//       .finally(() => setAuthChecked(true));
-//   }, []);
-
-//   if (!authChecked) return <div>Loading...</div>;
-
-//   return (
-//     <Routes>
-//       <Route
-//         path="/"
-//         element={!authenticated ? <Login /> : <Navigate to="/dashboard" />}
-//       />
-//       <Route
-//         path="/dashboard"
-//         element={authenticated ? <Dashboard /> : <Navigate to="/" />}
-//       />
-//       <Route path="/display" element={<Display />} />
-//     </Routes>
-//   );
-// }
-
-// export default App;
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
-import "./index.css";
-import ResetPassword from "./pages/ResetPassword"; // selon dossier dyalek
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Display from "./pages/Display";
 import GestionServices from "./pages/GestionServices";
 import Sidebar from "./pages/SideBar";
 import Navbar from "./pages/Navbar";
 import axios from "axios";
+import "./index.css";
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
+
+const setCsrfToken = () => {
+  const token = document.querySelector('meta[name="csrf-token"]');
+  if (token) {
+    axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
+  }
+};
+
+
+setCsrfToken();
+
+
+const observer = new MutationObserver(setCsrfToken);
+observer.observe(document.head, { childList: true });
+
 function App() {
   const [authChecked, setAuthChecked] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
@@ -104,35 +57,52 @@ function App() {
     }
   }, [darkMode]);
 
-  if (!authChecked && location.pathname !== "/produits") {
+  if (!authChecked && location.pathname !== "/dashboard") {
     return <div>Loading...</div>;
   }
-    // if (!authenticated) return <Login />;
+
+  if (
+    !authenticated &&
+    location.pathname !== "/reset-password" &&
+    location.pathname !== "/display"
+  ) {
+    return <Login />;
+  }
+
+  if (location.pathname === "/reset-password") {
+    return <ResetPassword />;
+  }
 
   return (
     <div className={`flex ${darkMode ? "dark" : ""}`}>
       {!shouldHideSidebar && (
-        <div className="flex bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-          <Sidebar />
-        </div>
+        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       )}
 
       <div
-        className={`${
-          !shouldHideSidebar ? "ml-64" : ""
-        } flex-1 min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white`}
+        className={`flex-1 transition-all duration-300 ${
+          !shouldHideSidebar ? (isCollapsed ? "ml-16" : "ml-64") : ""
+        } min-h-screen bg-gray-50 dark:bg-gray-900`}
       >
         {!shouldHideSidebar && (
-          <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+          <Navbar
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            isCollapsed={isCollapsed}
+          />
         )}
 
-        <div className={`p-4 ${!shouldHideSidebar ? "pt-20" : ""}`}>
+        <div
+          className={`${
+            !shouldHideSidebar ? "pt-20" : ""
+          } p-6 overflow-y-auto h-screen`}
+        >
           <Routes>
             <Route path="/produits" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/services" element={<GestionServices />} />
             <Route path="/display" element={<Display />} />
             <Route path="*" element={<Navigate to="/produits" />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
         </div>
       </div>

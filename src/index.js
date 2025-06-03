@@ -9,8 +9,8 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
-axios.defaults.xsrfHeaderName = "X-XSRF-TOKEN"; // 👈 مهم بزاف
-axios.defaults.xsrfCookieName = "XSRF-TOKEN";   // 👈 مهم بزاف
+axios.defaults.xsrfHeaderName = "X-XSRF-TOKEN";
+axios.defaults.xsrfCookieName = "XSRF-TOKEN";  
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

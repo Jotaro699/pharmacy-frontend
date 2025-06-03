@@ -250,41 +250,50 @@ const Display = () => {
           <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-green-900 to-transparent z-10 pointer-events-none"></div>
           <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-green-900 to-transparent z-10 pointer-events-none"></div>
           <div className="animate-slide whitespace-nowrap flex items-center gap-4 py-1">
-            {promotions.map((promo) => {
-              const product = products.find((p) => p.id === promo.produit_id);
-              if (!product) return null;
+            {promotions
+              .filter(
+                (promo) => new Date(promo.promotion_end) >= new Date() // ✅ Only active promotions
+              )
+              .map((promo) => {
+                const product = products.find((p) => p.id === promo.produit_id);
+                if (!product) return null;
 
-              return (
-                <div
-                  key={promo.id}
-                  className="flex items-center gap-3 bg-gradient-to-r from-green-800/50 to-emerald-800/50 px-3 py-1.5 rounded-xl shadow border border-green-400/40 hover:border-green-300/60 transition-all duration-300 hover:scale-105 cursor-pointer backdrop-blur-sm"
-                >
-                  <img
-                    src={`http://localhost:8000/storage/${product.image}`}
-                    alt={product.name}
-                    className="h-10 w-10 rounded-lg object-cover border-2 border-white/80 shadow-md"
-                  />
-                  <div className="min-w-0">
-                    <p className="font-semibold text-white text-xs truncate w-32 mb-1">
-                      {product.name}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <span className="line-through text-xs text-red-300/80">
-                        {Number(product.price).toFixed(2)} DH
-                      </span>
-                      <span className="font-bold text-emerald-200 text-xs">
-                        {(
-                          Number(product.price) -
-                          (Number(product.price) * promo.promotion_percentage) /
-                            100
-                        ).toFixed(2)}{" "}
-                        DH
-                      </span>
+                return (
+                  <div
+                    key={promo.id}
+                    className="flex items-center gap-3 bg-gradient-to-r from-green-800/50 to-emerald-800/50 px-3 py-1.5 rounded-xl shadow border border-green-400/40 hover:border-green-300/60 transition-all duration-300 hover:scale-105 cursor-pointer backdrop-blur-sm"
+                  >
+                    <img
+                      src={`http://localhost:8000/storage/${product.image}`}
+                      alt={product.name}
+                      className="h-10 w-10 rounded-lg object-cover border-2 border-white/80 shadow-md"
+                    />
+                    <div className="min-w-0">
+                      <p className="font-semibold text-white text-xs truncate w-32 mb-1">
+                        {product.name}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <span className="line-through text-xs text-red-300/80">
+                          {Number(product.price).toFixed(2)} DH
+                        </span>
+                        <span className="font-bold text-emerald-200 text-xs">
+                          {(
+                            Number(product.price) -
+                            (Number(product.price) *
+                              promo.promotion_percentage) /
+                              100
+                          ).toFixed(2)}{" "}
+                          DH
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-gray-200">
+                        Jusqu’au{" "}
+                        {new Date(promo.promotion_end).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </footer>
